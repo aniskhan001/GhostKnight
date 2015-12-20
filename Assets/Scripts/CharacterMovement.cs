@@ -3,13 +3,21 @@ using System.Collections;
 
 public class CharacterMovement : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
+    public float maxSpeed = 2.0f;
+    public bool facingRight = true;
+    public float moveDirectionX;
+    public float moveDirectionY;
+    public float gravitySpeed;
+
+    // Use this for initialization
+    void FixedUpdate () {
+        GetComponent<Rigidbody>().velocity = new Vector2(moveDirectionX * maxSpeed, moveDirectionY * maxSpeed);
+        //gravitySpeed = Physics.gravity.y * 1.5;
+    }
 	
 	// Update is called once per frame
 	void Update () {
-	
-	}
+        moveDirectionY = Input.GetAxis("Vertical");
+        moveDirectionX = Input.GetAxis("Horizontal");
+    }
 }
