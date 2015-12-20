@@ -13,6 +13,7 @@ public class CharacterMovement : MonoBehaviour {
     void FixedUpdate () {
         GetComponent<Rigidbody>().velocity = new Vector2(moveDirectionX * maxSpeed, moveDirectionY * maxSpeed);
         //gravitySpeed = Physics.gravity.y * 1.5;
+        GetComponent<Rigidbody>().AddForce(3 * Physics.gravity);
     }
 	
 	// Update is called once per frame
