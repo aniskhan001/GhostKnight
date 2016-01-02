@@ -8,6 +8,7 @@ public class CharacterMovement : MonoBehaviour {
     public float moveDirectionX;
     public float moveDirectionY;
     public float jumpSpeed = 700.0f;
+    public bool doubleJump = false;
 
     public bool grounded = false;
     public Transform groundCheck;
@@ -22,6 +23,9 @@ public class CharacterMovement : MonoBehaviour {
         grounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
         GetComponent<Rigidbody>().velocity = new Vector2(moveDirectionX * maxSpeed, GetComponent<Rigidbody>().velocity.y);
 
+        if (grounded)
+            doubleJump = false;
+
         if (moveDirectionX < 0.0f && facingRight) // player tries to go to the left (-ve) and facing right
             Flip();
         else if (moveDirectionX > 0.0f && !facingRight) // player tries to go to the right (+ve) and facing left
@@ -32,8 +36,12 @@ public class CharacterMovement : MonoBehaviour {
 	void Update () {
         moveDirectionX = Input.GetAxis("Horizontal");
 
-        if (grounded && Input.GetButtonDown("Jump"))
+        if ((grounded || !doubleJump) && Input.GetButtonDown("Jump")) {
             GetComponent<Rigidbody>().AddForce(new Vector2(0, jumpSpeed));
+
+            if (!doubleJump && !grounded)
+                doubleJump = true;
+        }
     }
 
     void Flip () {
