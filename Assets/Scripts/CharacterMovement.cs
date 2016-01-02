@@ -3,15 +3,24 @@ using System.Collections;
 
 public class CharacterMovement : MonoBehaviour {
 
-    public float maxSpeed = 2.0f;
+    public float maxSpeed = 5.0f;
     public bool facingRight = true;
     public float moveDirectionX;
     public float moveDirectionY;
-    public float gravitySpeed;
+    public float jumpSpeed = 700.0f;
 
-    // Use this for initialization
+    public bool grounded = false;
+    public Transform groundCheck;
+    public float groundRadius = 0.2f;
+    public LayerMask whatIsGround;
+
+    void Awake() {
+        groundCheck = GameObject.Find("GroundCheck").transform;
+    }
+    
     void FixedUpdate () {
-        GetComponent<Rigidbody>().velocity = new Vector2(moveDirectionX * maxSpeed, moveDirectionY * maxSpeed);
+        grounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
+        GetComponent<Rigidbody>().velocity = new Vector2(moveDirectionX * maxSpeed, GetComponent<Rigidbody>().velocity.y);
 
         if (moveDirectionX < 0.0f && facingRight) // player tries to go to the left (-ve) and facing right
             Flip();
@@ -21,8 +30,10 @@ public class CharacterMovement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        moveDirectionY = Input.GetAxis("Vertical");
         moveDirectionX = Input.GetAxis("Horizontal");
+
+        if (grounded && Input.GetButtonDown("Jump"))
+            GetComponent<Rigidbody>().AddForce(new Vector2(0, jumpSpeed));
     }
 
     void Flip () {
