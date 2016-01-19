@@ -15,8 +15,15 @@ public class CharacterMovement : MonoBehaviour {
     public float groundRadius = 0.2f;
     public LayerMask whatIsGround;
 
+    public float swordSpeed = 600.0f;
+    public Transform swordSpawn;
+    public Rigidbody swordPrefab;
+
+    Rigidbody clone;
+
     void Awake() {
         groundCheck = GameObject.Find("GroundCheck").transform;
+        swordSpawn = GameObject.Find("SwordSpawn").transform;
     }
     
     void FixedUpdate () {
@@ -42,11 +49,19 @@ public class CharacterMovement : MonoBehaviour {
             if (!doubleJump && !grounded)
                 doubleJump = true;
         }
+
+        if ( Input.GetButtonDown("Fire1") ) {
+            Attack();
+        }
     }
 
     void Flip () {
         facingRight = !facingRight;
-
         transform.Rotate(Vector3.up, 180.0f, Space.World);
+    }
+
+    void Attack () {
+        clone = Instantiate(swordPrefab, swordSpawn.position, swordSpawn.rotation) as Rigidbody;
+        clone.AddForce(swordSpawn.transform.right * swordSpeed);
     }
 }

@@ -1,0 +1,4 @@
+sceneSetups:
+- path: Assets/ghost_knight_project_scene.unity
+  isLoaded: 1
+  isActive: 1
