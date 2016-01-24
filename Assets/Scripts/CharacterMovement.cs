@@ -15,7 +15,7 @@ public class CharacterMovement : MonoBehaviour {
     public float groundRadius = 0.2f;
     public LayerMask whatIsGround;
 
-    public float swordSpeed = 600.0f;
+    public float swordSpeed = 300.0f;
     public Transform swordSpawn;
     public Rigidbody swordPrefab;
 
@@ -44,6 +44,7 @@ public class CharacterMovement : MonoBehaviour {
         moveDirectionX = Input.GetAxis("Horizontal");
 
         if ((grounded || !doubleJump) && Input.GetButtonDown("Jump")) {
+            //Destroy(clone);
             GetComponent<Rigidbody>().AddForce(new Vector2(0, jumpSpeed));
 
             if (!doubleJump && !grounded)
@@ -57,11 +58,13 @@ public class CharacterMovement : MonoBehaviour {
 
     void Flip () {
         facingRight = !facingRight;
-        transform.Rotate(Vector3.up, 180.0f, Space.World);
+        transform.Rotate(Vector3.up, 180.0f, Space.World); // make this more efficient
     }
 
     void Attack () {
         clone = Instantiate(swordPrefab, swordSpawn.position, swordSpawn.rotation) as Rigidbody;
+        //clone = Instantiate(swordPrefab) as Rigidbody;
         clone.AddForce(swordSpawn.transform.right * swordSpeed);
+        //Destroy(clone, 1);
     }
 }
