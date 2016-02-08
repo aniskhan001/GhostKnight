@@ -58,13 +58,19 @@ public class CharacterMovement : MonoBehaviour {
 
     void Flip () {
         facingRight = !facingRight;
-        transform.Rotate(Vector3.up, 180.0f, Space.World); // make this more efficient
+        //transform.Rotate(Vector3.up, 180.0f, Space.World); // make this more efficient
+        Vector3 _rotation = transform.localScale;
+        _rotation.x *= -1;
+        transform.localScale = _rotation;
     }
 
     void Attack () {
         clone = Instantiate(swordPrefab, swordSpawn.position, swordSpawn.rotation) as Rigidbody;
         //clone = Instantiate(swordPrefab) as Rigidbody;
-        clone.AddForce(swordSpawn.transform.right * swordSpeed);
+        if (facingRight)
+            clone.AddForce(swordSpawn.transform.right * swordSpeed);
+        else
+            clone.AddForce(-swordSpawn.transform.right * swordSpeed);
         //Destroy(clone, 1);
     }
 }
