@@ -1,3 +1,5 @@
 .*/
 Temp/*
 obj/*
+*.csproj
+*.sln
